@@ -1,0 +1,12 @@
+<% @feed.each do |question| %>
+$('#questions').append("<%= escape_javascript (render 'home/question', question: question) %>");
+<% end %>
+
+
+window.offset = <%= @new_offset %>;
+window.load_more_active = false;
+<% unless @show_load_more %> 
+
+$('#load_more').hide();
+
+<% end %>

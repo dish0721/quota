@@ -1,0 +1,14 @@
+<% if @is_upvote_questioned %>
+$('#upvote_question_<%= @question.id%>').html("Downvote");
+
+$('#count_upvote_question_<%= @question.id%>').html(<%=@question.upvote_questions.count%>);
+// noty({text: 'Tweet was Liked', type: 'alert'});
+alert('Question was upvoted');
+
+<% else %>
+
+$('#upvote_question_<%= @question.id%>').html("Upvote");
+// noty({text: 'Tweet was UnLiked', type: 'alert'});
+alert('Question was downvoted');
+
+<% end %>

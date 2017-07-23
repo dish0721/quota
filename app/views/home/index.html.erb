@@ -1,0 +1,123 @@
+<!-- <h1>Home#index</h1>
+<p>Find me in app/views/home/index.html.erb</p>
+ -->
+
+ <div></div>
+
+<header>
+<div class ="logo">
+<%=image_tag 'images.png'%>	
+<%=current_user.email%>
+</div>
+
+</header>
+<%= link_to "Sign Out", destroy_user_session_path, method: :delete  %>
+
+<main>
+	<section>
+
+		<div class ="create_question">
+
+		    
+
+			<%= form_for @question do |f|%>
+
+			
+			<b><%=f.label :question %></b>
+			<br>
+			     <%=f.text_area :content %>
+			<br>
+			<div class="actions">
+			<%=f.submit id: 'create_question'%>
+			
+		</div>
+		<%end%>
+		</div>
+		<% x=0 %>
+		<%y=0%>
+
+		
+		
+			<%Question.all.each do |question|%>
+			<div id="qa">
+			<ul type="none">
+			<li>
+			    <h3><u>Q<%=x=x+1%></u>
+				<i><%=question.content %></i></h3>
+
+
+
+				<button><%= link_to question.upvote_question_string(current_user.id), url_for(controller: 'upvote_question', action: 'toggle_vote',
+				     question_id: question.id, email: question.user.email), method: :post,id: "upvote_question_#{question.id}" ,remote: true %></button> 
+
+                    <p id ="count_upvote_question_<%=question.id%>">
+                       <%=question.upvote_questions.count%>
+	
+                    </p>
+				     
+
+
+				</li>
+				<br>
+				<h4><u>Answers for Question:</u><%=y=y+1%></h4>
+				<%question.answers.each do |answer|%>
+				<li>
+				<h4><%=answer.content%></h4>
+				</li>
+			
+				<%end%>
+			
+		</div>
+		<div class ="answer_form">
+			<%=form_for question.answers.new do |f| %>
+			<%=hidden_field_tag 'answer[question_id]',question.id%>
+			<%=f.text_area :content%>
+			<div class="actions">
+			<%=f.submit id:'post_answer'%>
+			<br>
+			</div>
+			<%end%>
+
+
+
+		</div>
+		<!-- <form action="" method="get">
+			<input type ="text" name="question" value="Answer">
+			<input type="hidden" name="Answer">
+
+		</form>
+ -->
+		
+       
+        </li>
+        <%end%>
+
+        <div id='load_more'>
+	    <%= render 'load_more', offset: 10 %>
+       </div>
+        
+
+
+	</section>
+</main>
+
+
+
+<script type="text/javascript">
+	$.ajax({url: '/ajax',
+		data: {
+			text: "text"
+		}
+, success: function(data){
+	console.log(data);
+	console.log("request completed");
+},
+error: function(){
+		console.log(arguments);
+
+	console.log("some error");
+}
+
+});
+</script>
+
