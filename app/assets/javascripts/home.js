@@ -1,5 +1,9 @@
 window.load_more_active = false;
     window.offset = 10;
+
+    
+
+
     document.addEventListener('scroll', function(event){
         
         if(!window.load_more_active){
@@ -18,3 +22,6 @@ window.load_more_active = false;
         }
         
     });
+
+    
+    

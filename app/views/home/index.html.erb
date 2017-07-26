@@ -1,17 +1,15 @@
-<!-- <h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
- -->
-
  <div></div>
 
 <header>
 <div class ="logo">
 <%=image_tag 'images.png'%>	
-<%=current_user.email%>
 </div>
-
 </header>
-<%= link_to "Sign Out", destroy_user_session_path, method: :delete  %>
+<div class ="bg">
+<br>
+<h2><i> WELCOME <%=current_user.email%> !</i></h2>
+
+<h3><%= link_to "Sign Out", destroy_user_session_path, method: :delete  %></h3>
 
 <main>
 	<section>
@@ -23,9 +21,9 @@
 			<%= form_for @question do |f|%>
 
 			
-			<b><%=f.label :question %></b>
+			<h2><b><%=f.label :question ,value="Ask a Question" %></b></h2>
 			<br>
-			     <%=f.text_area :content %>
+			     <%=f.text_area :content ,cols:"100",rows:"5"%>
 			<br>
 			<div class="actions">
 			<%=f.submit id: 'create_question'%>
@@ -44,6 +42,14 @@
 			<li>
 			    <h3><u>Q<%=x=x+1%></u>
 				<i><%=question.content %></i></h3>
+				<h4>(By : <%=question.user.email%> )</h4>
+				 <!-- <a href="/questions/<%=x%>/edit">Edit</a> -->
+				
+			        <td><%= link_to 'Edit', edit_question_path(question) %></td>
+			        <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			      </tr>
+			      
+
 
 
 
@@ -51,9 +57,10 @@
 				     question_id: question.id, email: question.user.email), method: :post,id: "upvote_question_#{question.id}" ,remote: true %></button> 
 
                     <p id ="count_upvote_question_<%=question.id%>">
-                       <%=question.upvote_questions.count%>
+                       Number of upvotes: <%=question.upvote_questions.count%>
 	
                     </p>
+
 				     
 
 
@@ -64,29 +71,30 @@
 				<li>
 				<h4><%=answer.content%></h4>
 				</li>
-			
+			    
 				<%end%>
+
+
+
 			
 		</div>
 		<div class ="answer_form">
 			<%=form_for question.answers.new do |f| %>
 			<%=hidden_field_tag 'answer[question_id]',question.id%>
-			<%=f.text_area :content%>
-			<div class="actions">
-			<%=f.submit id:'post_answer'%>
 			<br>
-			</div>
+			<%=f.text_area :content,cols:"100", rows:"3"%>
+			
+			<%=f.submit id:'post_answer',value:"Answer"%>
+			<br>
+			<br>
+			
 			<%end%>
 
 
 
 		</div>
-		<!-- <form action="" method="get">
-			<input type ="text" name="question" value="Answer">
-			<input type="hidden" name="Answer">
-
-		</form>
- -->
+	
+ 
 		
        
         </li>
@@ -95,15 +103,59 @@
         <div id='load_more'>
 	    <%= render 'load_more', offset: 10 %>
        </div>
+
         
 
 
 	</section>
 </main>
+</ul>
+</div>
+
+<button id="toTopButton">Scroll to Top</button>
+
+<style type="text/css">
+	#toTopButton{
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+	}
+</style>
+</body>
+<script type="text/javascript">
+
+	var moveToTopLibrary = function(){
+		var interval;
+		function goToTop(event){
+			var y = window.scrollY;
+			if(interval != null){
+				clearInterval(interval);
+			}
+			interval = setInterval(function(){
+						if(y > 0) y -= 10;
+						else clearInterval(interval);
+						window.scrollTo(0,y);
+					},10);
+		}
+
+		function scrollEve(event) {
+			if(interval != null && event.deltaY > 0){
+				clearInterval(interval);
+			}
+		}
+		var topButton = document.getElementById('toTopButton');
+		window.addEventListener('wheel',scrollEve);
+		topButton.addEventListener('click',goToTop);
+	}
+
+	moveToTopLibrary();
+</script>
 
 
 
 <script type="text/javascript">
+    
+
 	$.ajax({url: '/ajax',
 		data: {
 			text: "text"
