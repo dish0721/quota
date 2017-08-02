@@ -1,16 +1,17 @@
  <div></div>
 
-<header>
+<!-- <header>
 <div class ="logo">
 <%=image_tag 'images.png'%>	
 </div>
 </header>
+<h3><%= link_to "Sign Out", destroy_user_session_path, method: :delete  %></h3> -->
 <div class ="bg">
 <br>
-<h2><i> WELCOME <%=current_user.email%> !</i></h2>
-
-<h3><%= link_to "Sign Out", destroy_user_session_path, method: :delete  %></h3>
-
+<br>
+<h2><b> WELCOME <%=current_user.email%> !</b></h2> 
+<h3>( <%=current_user.role%> )</h3>
+<%= link_to "Users", users_path %> 
 <main>
 	<section>
 
@@ -44,10 +45,13 @@
 				<i><%=question.content %></i></h3>
 				<h4>(By : <%=question.user.email%> )</h4>
 				 <!-- <a href="/questions/<%=x%>/edit">Edit</a> -->
+
+				 <% if question.can_modify current_user %>
 				
 			        <td><%= link_to 'Edit', edit_question_path(question) %></td>
 			        <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 			      </tr>
+			      <% end %>
 			      
 
 
@@ -55,11 +59,13 @@
 
 				<button><%= link_to question.upvote_question_string(current_user.id), url_for(controller: 'upvote_question', action: 'toggle_vote',
 				     question_id: question.id, email: question.user.email), method: :post,id: "upvote_question_#{question.id}" ,remote: true %></button> 
+				     <br>
+				     Number of upvotes:
 
-                    <p id ="count_upvote_question_<%=question.id%>">
-                       Number of upvotes: <%=question.upvote_questions.count%>
+                    <div id ="count_upvote_question_<%=question.id%>">
+                        <%=question.upvote_questions.count%>
 	
-                    </p>
+                    </div>
 
 				     
 

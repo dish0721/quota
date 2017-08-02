@@ -57,10 +57,17 @@ class QuestionsController < ApplicationController
   # DELETE /questions/1.json
   def destroy
     @question.destroy
+    if @tweet.can_modify current_user
+       @tweet.destroy
     respond_to do |format|
       format.html { redirect_to questions_url, notice: 'Question was successfully destroyed.' }
       format.json { head :no_content }
     end
+    else
+       format.html {
+         render :file => '404.html'
+       }
+     end
   end
 
   private

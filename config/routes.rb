@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   get '/ajax' => 'home#ajax'
   post '/toggle' => 'upvote_question#toggle_vote'
 
+  get '/users' => 'home#users'
+  post '/follow' => 'home#follow'
+
 
 
   devise_for :users
